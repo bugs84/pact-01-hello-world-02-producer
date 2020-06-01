@@ -22,9 +22,11 @@ class FirstProviderTest {
 
     @BeforeEach
     fun setupProvider(context: PactVerificationContext) {
+        //setup our service
         ourProvider = OurProvider()
-        val myProviderUrl = ourProvider.url
-        context.target = HttpTestTarget.fromUrl(URL(myProviderUrl))
+
+        //setup url
+        context.target = HttpTestTarget.fromUrl(URL(ourProvider.url))
         // or something like
         // context.setTarget(new HttpTestTarget("localhost", myProviderPort, "/"));
     }
@@ -36,27 +38,12 @@ class FirstProviderTest {
 
     @State("test state") // Method will be run before testing interactions that require "default" or "no-data" state
     fun toTestState() {
-        // Prepare service before interaction that require "default" state
+        // Prepare service before interaction that require "test state" state
         // ...
         System.out.println("Now service in default state");
     }
 
-//    @State("default", "no-data") // Method will be run before testing interactions that require "default" or "no-data" state
-//    fun toDefaultState() {
-//        // Prepare service before interaction that require "default" state
-//        // ...
-//        System.out.println("Now service in default state");
-//    }
-//
-//    @State("with-data") // Method will be run before testing interactions that require "with-data" state
-//    fun toStateWithData(data: Map<String, Any>) {
-//        // Prepare service before interaction that require "with-data" state. The provider state data will be passed
-//        // in the data parameter
-//        // ...
-//        System.out.println("Now service in state using data " + data);
-//    }
-
-
+    
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider::class)
     fun pactVerificationTestTemplate(context: PactVerificationContext) {
