@@ -6,6 +6,7 @@ import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvide
 import au.com.dius.pact.provider.junitsupport.Provider
 import au.com.dius.pact.provider.junitsupport.State
 import au.com.dius.pact.provider.junitsupport.loader.PactUrl
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestTemplate
 import org.junit.jupiter.api.extension.ExtendWith
@@ -17,13 +18,20 @@ import java.net.URL
 @PactUrl(urls = arrayOf("file:///C:/PRAC/pact/pact-01-hello-world-02-producer/src/test/resources/pacts/test_consumer-ArticlesProvider.json"))
 class FirstProviderTest {
 
+    lateinit var ourProvider: OurProvider
 
     @BeforeEach
-    fun before(context: PactVerificationContext) {
-        val myProviderUrl = "http://localhost:30600/providerUrl"
+    fun setupProvider(context: PactVerificationContext) {
+        ourProvider = OurProvider()
+        val myProviderUrl = ourProvider.url
         context.target = HttpTestTarget.fromUrl(URL(myProviderUrl))
         // or something like
         // context.setTarget(new HttpTestTarget("localhost", myProviderPort, "/"));
+    }
+
+    @AfterEach
+    fun tearDownProvider() {
+        ourProvider.close()
     }
 
     @State("test state") // Method will be run before testing interactions that require "default" or "no-data" state
