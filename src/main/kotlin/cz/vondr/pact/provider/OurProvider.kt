@@ -4,7 +4,11 @@ import com.sun.net.httpserver.HttpServer
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 
-class OurProvider() : AutoCloseable {
+/**
+ * This is example of provider application.
+ * Server application, that provide list of articles via. REST interface.
+ */
+class OurProvider : AutoCloseable {
 
 
     val port = getFreePort()

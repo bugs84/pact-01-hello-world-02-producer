@@ -16,10 +16,9 @@ import java.nio.file.Paths
 
 
 @Provider("myAwesomeService")
-//@PactFolder("pacts")
-//@PactFolder("src/test/resources/pacts/test_consumer-ArticlesProvider.json")
-// Now it reads pact file from hardcoded path. In real example it would read from pact provider/artifactory or something better
-@PactUrl(urls = arrayOf("file:///C:/PRAC/pact/pact-01-hello-world-02-producer/src/test/resources/pacts/test_consumer-ArticlesProvider.json"))
+// Now it reads pact file from hardcoded path. In real example it would read from pact provider/artifactory or better from Pact Broker
+//@PactUrl(urls = arrayOf("file:///C:/PRAC/pact/pact-01-hello-world-02-producer/src/test/resources/pacts/test_consumer-ArticlesProvider.json"))
+@PactUrl(urls = arrayOf("file:///home/j.vondrous/repos/my-repos/pact-01-hello-world-01-consumer/build/pacts/test_consumer-ArticlesProvider.json"))
 class FirstProviderTest {
 
     lateinit var ourProvider: OurProvider
