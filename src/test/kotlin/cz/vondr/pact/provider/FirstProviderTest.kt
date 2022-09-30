@@ -5,14 +5,12 @@ import au.com.dius.pact.provider.junit5.PactVerificationContext
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider
 import au.com.dius.pact.provider.junitsupport.Provider
 import au.com.dius.pact.provider.junitsupport.State
-import au.com.dius.pact.provider.junitsupport.loader.PactFolder
 import au.com.dius.pact.provider.junitsupport.loader.PactUrl
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestTemplate
 import org.junit.jupiter.api.extension.ExtendWith
 import java.net.URL
-import java.nio.file.Paths
 
 
 @Provider("myAwesomeService")
@@ -21,23 +19,23 @@ import java.nio.file.Paths
 @PactUrl(urls = arrayOf("file:///home/j.vondrous/repos/my-repos/pact-01-hello-world-01-consumer/build/pacts/test_consumer-ArticlesProvider.json"))
 class FirstProviderTest {
 
-    lateinit var ourProvider: OurProvider
+    lateinit var articlesProvider: ArticlesProvider
 
     // PROVIDER PROVIDE OWN REST SERVICE
     @BeforeEach
     fun setupProvider(context: PactVerificationContext) {
         //setup our service
-        ourProvider = OurProvider()
+        articlesProvider = ArticlesProvider()
 
         //setup url
-        context.target = HttpTestTarget.fromUrl(URL(ourProvider.url))
+        context.target = HttpTestTarget.fromUrl(URL(articlesProvider.url))
         // or something like
         // context.setTarget(new HttpTestTarget("localhost", myProviderPort, "/"));
     }
 
     @AfterEach
     fun tearDownProvider() {
-        ourProvider.close()
+        articlesProvider.close()
     }
 
     // IF PROVIDER NEEDS SOME SPECIFIC STATE - here it can be setup

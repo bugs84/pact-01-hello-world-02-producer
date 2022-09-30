@@ -1,5 +1,10 @@
-Producer sample based on pact file created in consumer sample project
+# CDC - Consumer Driven Contract tests - Usage example of pact.io for test
+This is example pact.io tests for "Provider" application.
 
+## Associated projects:
+- https://github.com/bugs84/pact-01-hello-world-01-consumer
+- https://github.com/bugs84/pact-01-hello-world-02-producer
+- https://github.com/bugs84/pact-01-hello-world-pact-broker
 
 sources:
 https://github.com/DiUS/pact-jvm/tree/master/provider/junit5

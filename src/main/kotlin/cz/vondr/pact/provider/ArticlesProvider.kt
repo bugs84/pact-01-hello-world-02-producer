@@ -8,7 +8,7 @@ import java.net.ServerSocket
  * This is example of provider application.
  * Server application, that provide list of articles via. REST interface.
  */
-class OurProvider : AutoCloseable {
+class ArticlesProvider : AutoCloseable {
 
 
     val port = getFreePort()
