@@ -3,9 +3,10 @@ package cz.vondr.pact.provider
 import au.com.dius.pact.provider.junit5.HttpTestTarget
 import au.com.dius.pact.provider.junit5.PactVerificationContext
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider
+import au.com.dius.pact.provider.junitsupport.Consumer
 import au.com.dius.pact.provider.junitsupport.Provider
 import au.com.dius.pact.provider.junitsupport.State
-import au.com.dius.pact.provider.junitsupport.loader.PactUrl
+import au.com.dius.pact.provider.junitsupport.loader.PactBroker
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestTemplate
@@ -13,11 +14,10 @@ import org.junit.jupiter.api.extension.ExtendWith
 import java.net.URL
 
 
-@Provider("myAwesomeService")
-// Now it reads pact file from hardcoded path. In real example it would read from pact provider/artifactory or better from Pact Broker
-//@PactUrl(urls = arrayOf("file:///C:/PRAC/pact/pact-01-hello-world-02-producer/src/test/resources/pacts/test_consumer-ArticlesProvider.json"))
-@PactUrl(urls = arrayOf("file:///home/j.vondrous/repos/my-repos/pact-01-hello-world-01-consumer/build/pacts/test_consumer-ArticlesProvider.json"))
-class FirstProviderTest {
+@PactBroker(host = "localhost", port = "9292")
+@Provider("ArticlesProvider")
+@Consumer("test_consumer")
+class FirstProviderTestContractExchangedViaPactBroker {
 
     lateinit var articlesProvider: ArticlesProvider
 
