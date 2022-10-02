@@ -1,6 +1,9 @@
 package cz.vondr.pact.provider
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.sun.net.httpserver.HttpServer
+import cz.vondr.pact.provider.dto.Article
+import cz.vondr.pact.provider.dto.ListArticlesResponse
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 
@@ -9,11 +12,11 @@ import java.net.ServerSocket
  * Server application, that provide list of articles via. REST interface.
  */
 class ArticlesProvider : AutoCloseable {
-
-
     val port = getFreePort()
     val url = "http://localhost:$port/"
     private val server: HttpServer = HttpServer.create(InetSocketAddress(port), 0)
+
+    private val articles: MutableList<Article> = mutableListOf()
 
     init {
         createArticlesResponse()
@@ -38,13 +41,9 @@ class ArticlesProvider : AutoCloseable {
     fun createArticlesResponse() {
         server.createContext("/articles.json") { httpExchange ->
             //Return
-            val response = """
-                        {
-                          "responsetest": true
-                        }
-                        """
+            val response = ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(ListArticlesResponse(articles))
             httpExchange.responseHeaders.add("Content-Type", "application/json")
-            httpExchange.sendResponseHeaders(200, response.length.toLong())
+            httpExchange.sendResponseHeaders(200, response.toByteArray().size.toLong())
             httpExchange.responseBody.use { os ->
                 os.write(response.toByteArray())
             }
@@ -64,6 +63,10 @@ class ArticlesProvider : AutoCloseable {
             }
         }
         return port
+    }
+
+    fun addArticle(article: Article) = this.apply {
+        articles.add(article)
     }
 
 }

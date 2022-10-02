@@ -15,8 +15,8 @@ import java.net.URL
 
 @Provider("myAwesomeService")
 // Now it reads pact file from hardcoded path. In real example it would read from pact provider/artifactory or better from Pact Broker
-//@PactUrl(urls = arrayOf("file:///C:/PRAC/pact/pact-01-hello-world-02-producer/src/test/resources/pacts/test_consumer-ArticlesProvider.json"))
-@PactUrl(urls = arrayOf("file:///home/j.vondrous/repos/my-repos/pact-01-hello-world-01-consumer/build/pacts/test_consumer-ArticlesProvider.json"))
+//@PactUrl(urls = ["file:///C:/PRAC/pact/pact-01-hello-world-02-producer/src/test/resources/pacts/test_consumer-ArticlesProvider.json"])
+@PactUrl(urls = ["file:///home/j.vondrous/repos/my-repos/pact-01-hello-world-01-consumer/build/pacts/test_consumer-ArticlesProvider.json"])
 class FirstProviderTestContractExchangedViaFile {
 
     lateinit var articlesProvider: ArticlesProvider
@@ -43,7 +43,7 @@ class FirstProviderTestContractExchangedViaFile {
     fun toTestState() {
         // Prepare service before interaction that require "test state" state
         // ...
-        System.out.println("Now service in default state");
+        println("Now setup provider to test state.")
     }
 
     // THIS START Tests provided by Consumer

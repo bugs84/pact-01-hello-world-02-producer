@@ -7,30 +7,22 @@ import au.com.dius.pact.provider.junitsupport.Consumer
 import au.com.dius.pact.provider.junitsupport.Provider
 import au.com.dius.pact.provider.junitsupport.State
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker
+import cz.vondr.pact.provider.dto.Article
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestTemplate
 import org.junit.jupiter.api.extension.ExtendWith
 import java.net.URL
 
-
 @PactBroker(host = "localhost", port = "9292")
 @Provider("ArticlesProvider")
-@Consumer("test_consumer")
-class FirstProviderTestContractExchangedViaPactBroker {
-
+@Consumer("ArticlesConsumer")
+class ArticlesConsumerTest {
     lateinit var articlesProvider: ArticlesProvider
-
-    // PROVIDER PROVIDE OWN REST SERVICE
     @BeforeEach
     fun setupProvider(context: PactVerificationContext) {
-        //setup our service
         articlesProvider = ArticlesProvider()
-
-        //setup url
         context.target = HttpTestTarget.fromUrl(URL(articlesProvider.url))
-        // or something like
-        // context.setTarget(new HttpTestTarget("localhost", myProviderPort, "/"));
     }
 
     @AfterEach
@@ -38,20 +30,17 @@ class FirstProviderTestContractExchangedViaPactBroker {
         articlesProvider.close()
     }
 
-    // IF PROVIDER NEEDS SOME SPECIFIC STATE - here it can be setup
-    @State("test state") // Method will be run before testing interactions that require "default" or "no-data" state
-    fun toTestState() {
-        // Prepare articlesProvider to "test state" before interaction
-        // ...
-        println("Now setup provider to test state.")
-    }
+    @State("Provider with three articles")
+    fun setStateWithThreeArticles() = 
+        articlesProvider
+            .addArticle(Article("Basic news", 104))
+            .addArticle(Article("About dogs", 5684))
+            .addArticle(Article("Gossip", 4512384))
 
-    // THIS START Tests provided by Consumer
+
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider::class)
     fun pactVerificationTestTemplate(context: PactVerificationContext) {
         context.verifyInteraction()
     }
-
-
 }
